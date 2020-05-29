@@ -18,6 +18,7 @@ FavoritesScreen.navigationOptions = navData => {
         <Item
           title='Menu'
           iconName='ios-menu'
+          size={36}
           onPress={() => {
             navData.navigation.toggleDrawer()
           }}

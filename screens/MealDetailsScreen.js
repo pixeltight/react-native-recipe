@@ -45,6 +45,7 @@ MealDetailsScreen.navigationOptions = navigationData => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title='Favroite'
+          size={23}
           iconName='ios-star'
           onPress={() => {
             console.log('FAVORITE')

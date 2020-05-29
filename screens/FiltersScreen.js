@@ -1,28 +1,34 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, Switch } from 'react-native'
+import React, { useState, useEffect, useCallback } from 'react'
+import { View, Text, StyleSheet } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 
 import HeaderButton from '../components/HeaderButton'
-import Colors from '../constants/colors'
-
-const FilterSwitch = props => {
-  return (
-    <View style={styles.filterContainer}>
-      <Text>{props.label}</Text>
-      <Switch
-        trackColor={{ true: Colors.primaryColor }}
-        value={props.state}
-        onValueChange={props.onChange}
-      />
-    </View>
-  )
-}
+import FilterSwitch from '../components/FilterSwitch'
 
 const FiltersScreen = props => {
+  // extracting navigation key from props object to avoid
+  // rerendering any time props change in useEffect
+
+  const { navigation } = props
   const [isGlutenFree, setIsGlutenFree] = useState(false)
   const [isVegan, setIsVegan] = useState(false)
   const [isVegetarian, setIsVegetarian] = useState(false)
   const [isLactoseFree, setIsLactoseFree] = useState(false)
+
+  const saveFilters = useCallback(() => {
+    const appliedFilters = {
+      glutenFree: isGlutenFree,
+      lactoseFree: isLactoseFree,
+      vegan: isVegan,
+      vegetarian: isVegetarian
+    }
+    console.log(appliedFilters)
+  }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian])
+
+  useEffect(() => {
+    navigation.setParams({ save: saveFilters })
+  }, [saveFilters])
+
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>Filter Recipe Requirements</Text>
@@ -58,9 +64,20 @@ FiltersScreen.navigationOptions = navData => {
         <Item
           title='Menu'
           iconName='ios-menu'
+          size={36}
           onPress={() => {
             navData.navigation.toggleDrawer()
           }}
+        />
+      </HeaderButtons>
+    ),
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title='Save'
+          iconName='ios-save'
+          size={30}
+          onPress={navData.navigation.getParam('save')}
         />
       </HeaderButtons>
     )
@@ -71,19 +88,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: 'center'
-  },
-  filterContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderColor: '#CCC',
-    borderWidth: 1,
-    width: '90%',
-    paddingVertical: 7,
-    paddingHorizontal: 8,
-    backgroundColor: '#E9E9E9',
-    borderRadius: 15,
-    marginTop: 15
   },
   title: {
     marginTop: 20,

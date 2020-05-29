@@ -38,6 +38,7 @@ CategoriesScreen.navigationOptions = navData => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title='Menu'
+          size={36}
           iconName='ios-menu'
           onPress={() => {
             navData.navigation.toggleDrawer()
