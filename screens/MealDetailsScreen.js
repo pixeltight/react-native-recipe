@@ -1,24 +1,37 @@
 import React from 'react'
-import { View, Text, StyleSheet, Button, Image } from 'react-native'
+import { View, Image, Text, ScrollView, StyleSheet, Button } from 'react-native'
 
 import { MEALS } from '../data/dummy-data'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import HeaderButton from '../components/HeaderButton'
+import DefaultText from '../components/DefaultText'
+
+const ListItem = props => (
+  <View style={styles.listItem}>
+    <DefaultText>{props.children}</DefaultText>
+  </View>
+)
 
 const MealDetailsScreen = props => {
   const mealId = props.navigation.getParam('mealId')
   const selectedMeal = MEALS.find(meal => meal.id === mealId)
   return (
-    <View style={styles.screen}>
-      <Text>{selectedMeal.title}</Text>
-      <Image source={{ uri: selectedMeal.imageUrl }} />
-      <Button
-        title='Go to Back to Categories'
-        onPress={() => {
-          props.navigation.popToTop()
-        }}
-      />
-    </View>
+    <ScrollView>
+      <Image source={{ uri: selectedMeal.imageUrl }} style={styles.image} />
+      <View style={styles.detail}>
+        <DefaultText>{selectedMeal.duration}m</DefaultText>
+        <DefaultText>{selectedMeal.complexity.toUpperCase()}</DefaultText>
+        <DefaultText>{selectedMeal.affordability.toUpperCase()}</DefaultText>
+      </View>
+      <Text style={styles.title}>Ingredients</Text>
+      {selectedMeal.ingredients.map(ingredient => (
+        <ListItem key={ingredient}>{ingredient}</ListItem>
+      ))}
+      <Text style={styles.title}>Steps</Text>
+      {selectedMeal.steps.map(step => (
+        <ListItem key={step}>{step}</ListItem>
+      ))}
+    </ScrollView>
   )
 }
 
@@ -43,10 +56,28 @@ MealDetailsScreen.navigationOptions = navigationData => {
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+  image: {
+    width: '100%',
+    height: 200
+  },
+  detail: {
+    flexDirection: 'row',
+    paddingVertical: 4,
+    justifyContent: 'space-around',
+    backgroundColor: '#D8D8D8'
+  },
+  title: {
+    fontFamily: 'open-sans-bold',
+    textAlign: 'center',
+    fontSize: 16,
+    marginTop: 8
+  },
+  listItem: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#D8D8D8',
+    marginBottom: 6,
+    marginHorizontal: 14,
+    padding: 5
   }
 })
 
