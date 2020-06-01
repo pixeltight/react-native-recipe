@@ -1,7 +1,9 @@
 import React from 'react'
 import { Text, StyleSheet } from 'react-native'
 
-const DefaultText = props => <Text style={styles.text}>{props.children}</Text>
+const DefaultText = props => (
+  <Text style={{ ...styles.text, ...props.customText }}>{props.children}</Text>
+)
 
 styles = StyleSheet.create({
   text: {
