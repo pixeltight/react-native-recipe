@@ -26,9 +26,6 @@ const FiltersScreen = props => {
       vegan: isVegan,
       vegetarian: isVegetarian
     }
-    console.log(
-      `appliedFilters - filters screen: ${JSON.stringify(appliedFilters)}`
-    )
 
     dispatch(setFilters(appliedFilters))
   }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian, dispatch])
